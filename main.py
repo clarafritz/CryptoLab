@@ -109,6 +109,7 @@ average_frequency = {
     'U': 6.38, 'V': 1.64, 'W': 0.03, 'X': 0.41, 'Y': 0.28,
     'Z': 0.15
 }
+choix_valide = True
 
 # --------- INTRODUCTION SCRIPT 
 print('==== CAESAR CIPHER ====')
@@ -121,36 +122,43 @@ option = input(
     '   d --> dechiffrement \n' 
     '   b --> attaque par force brute \n'
     'Votre choix : '
-)
+).lower().strip()
 msg = input("Message à analyser : ")
-user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ")
+user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ").lower().strip()
 
-if user_frequence == 'o' : 
-    option_frequence = True
-    frequency_analysis(msg, option_frequence)
-else: 
-    option_frequence = False 
+if choix_valide == True: 
+    if user_frequence == 'o' : 
+        option_frequence = True
+        frequency_analysis(msg, option_frequence)
+    elif user_frequence == 'n': 
+        option_frequence = False 
+    else: 
+        choix_valide = False
+
 
 
 # ---- mode 
-if option == 'b':
-    result = brute_force(msg)
-    if result == [] : 
-        print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
-    else: 
-        for prop in result:
-            print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
+if choix_valide == True: 
+    if option == 'b':
+        result = brute_force(msg)
+        if result == [] : 
+            print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
+        else: 
+            for prop in result:
+                print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
 
-elif option == 'c' or option == 'd':
-    try :
-        decalage = int(input('Veuillez saisir votre decalage : '))
-        if option == 'c' :
-            print(user_input(msg, decalage))
-        else:
-            print(user_input(msg, -decalage))
-    except ValueError: 
-        print('Decalage invalide : veuillez saisir un nombre entier')
-    
+    elif option == 'c' or option == 'd':
+        try :
+            decalage = int(input('Veuillez saisir votre decalage : '))
+            if option == 'c' :
+                print(user_input(msg, decalage))
+            else:
+                print(user_input(msg, -decalage))
+        except ValueError: 
+            print('Decalage invalide : veuillez saisir un nombre entier')
         
+            
+    else: 
+        print('Vous avez choisi un mode inexistant')
 else: 
-    print('Vous avez choisi un mode inexistant')
+    print('Choix invalide : veuillez répondre que par oui (o) ou non (n)')
