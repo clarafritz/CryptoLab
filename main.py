@@ -110,6 +110,8 @@ average_frequency = {
     'Z': 0.15
 }
 choix_valide = True
+option_validate = False
+
 
 # --------- INTRODUCTION SCRIPT 
 print('==== CAESAR CIPHER ====')
@@ -123,42 +125,44 @@ option = input(
     '   b --> attaque par force brute \n'
     'Votre choix : '
 ).lower().strip()
-msg = input("Message à analyser : ")
-user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ").lower().strip()
+if option == 'c' or option == 'b' or option == 'd':
+    option_validate = True
 
-if choix_valide == True: 
-    if user_frequence == 'o' : 
-        option_frequence = True
-        frequency_analysis(msg, option_frequence)
-    elif user_frequence == 'n': 
-        option_frequence = False 
-    else: 
-        choix_valide = False
-
-
-
-# ---- mode 
-if choix_valide == True: 
-    if option == 'b':
-        result = brute_force(msg)
-        if result == [] : 
-            print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
-        else: 
-            for prop in result:
-                print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
-
-    elif option == 'c' or option == 'd':
-        try :
-            decalage = int(input('Veuillez saisir votre decalage : '))
-            if option == 'c' :
-                print(user_input(msg, decalage))
-            else:
-                print(user_input(msg, -decalage))
-        except ValueError: 
-            print('Decalage invalide : veuillez saisir un nombre entier')
-        
-            
-    else: 
-        print('Vous avez choisi un mode inexistant')
+if option_validate == False: 
+    print('Vous avez choisi un mode inexistant')
 else: 
-    print('Choix invalide : veuillez répondre que par oui (o) ou non (n)')
+    msg = input("Message à analyser : ")
+    user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ").lower().strip()
+
+    if choix_valide == True: 
+        if user_frequence == 'o' : 
+            option_frequence = True
+            frequency_analysis(msg, option_frequence)
+        elif user_frequence == 'n': 
+            option_frequence = False 
+        else: 
+            choix_valide = False
+
+
+    # ---- mode 
+    if choix_valide == True: 
+        if option == 'b':
+            result = brute_force(msg)
+            if result == [] : 
+                print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
+            else: 
+                for prop in result:
+                    print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
+
+        elif option == 'c' or option == 'd':
+            try :
+                decalage = int(input('Veuillez saisir votre decalage : '))
+                if option == 'c' :
+                    print(user_input(msg, decalage))
+                else:
+                    print(user_input(msg, -decalage))
+            except ValueError: 
+                print('Decalage invalide : veuillez saisir un nombre entier')
+        
+    else: 
+        print('Choix invalide : veuillez répondre que par oui (o) ou non (n)')
