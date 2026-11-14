@@ -127,6 +127,7 @@ user_frequence= input("Voulez-vous voir les fréquences calculées ? (o / n) ")
 
 if user_frequence == 'o' : 
     option_frequence = True
+    frequency_analysis(msg, option_frequence)
 else: 
     option_frequence = False 
 
@@ -134,15 +135,22 @@ else:
 # ---- mode 
 if option == 'b':
     result = brute_force(msg)
-    for prop in result:
-        print("Key : ", prop["key"], " || Message : ", prop["message"], " || Score : ", prop["score"])
+    if result == [] : 
+        print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
+    else: 
+        for prop in result:
+            print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
 
 elif option == 'c' or option == 'd':
-    decalage = int(input('Veuillez saisir votre decalage : '))
-    if option == 'c' :
-        print(user_input(msg, decalage))
-    else:
-        print(user_input(msg, -decalage))
+    try :
+        decalage = int(input('Veuillez saisir votre decalage : '))
+        if option == 'c' :
+            print(user_input(msg, decalage))
+        else:
+            print(user_input(msg, -decalage))
+    except ValueError: 
+        print('Decalage invalide : veuillez saisir un nombre entier')
+    
         
 else: 
     print('Vous avez choisi un mode inexistant')
