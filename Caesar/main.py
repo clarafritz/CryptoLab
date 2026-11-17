@@ -28,11 +28,14 @@ def user_input(msg, decalage):
 
 # Fonction : attaque par force brut : test les 26 clés grâce la fonction user_input()
 def brute_force(msg): 
+    dictio = load_dictionary()
     result = []
+
     for decalage in range(26):
         message = user_input(msg, decalage)
-        score_prop = similarity_score(message)
-        reconnaissance = word_recognition(message)
+        score_prop = similarity_score(message)        
+        reconnaissance = word_recognition(message, dictio)
+
         if score_prop is not None: 
             key = 26 - decalage
             if key == 26: 
@@ -104,16 +107,7 @@ def similarity_score(msg):
 
 
 # Fonction : Analyse le message mot par mot -> fait une reconnaissance dans un dictionnaire FR (enleve ponctuation)
-# utilisation fichier txt french_words pour lire dictio -> open() / readlines()
-def word_recognition(msg):
-    chemin_dictio = Path(__file__).parent/'french_words.txt'
-    dictio_fr = []
-    
-    with open(chemin_dictio, 'r', encoding='utf-8') as fichier: 
-        lignes = fichier.readlines()
-        for mot in lignes: 
-            dictio_fr.append(mot.strip())
-
+def word_recognition(msg, dictio):
     message = ''
 
     for i in range(len(msg)):
@@ -125,10 +119,23 @@ def word_recognition(msg):
 
     cpt = 0
     for mot in word_msg :
-        if mot in dictio_fr:
+        if mot in dictio:
             cpt += 1
 
     return cpt
+
+
+# Fonction : Ouvre le fichier txt qui sert de dictionnaire francais et retourne le message user decoupé en mot
+def load_dictionary():
+    chemin_dictio = Path(__file__).parent/'french_words.txt'
+    dictio_fr = []
+
+    with open(chemin_dictio, 'r', encoding='utf-8') as fichier:
+        lignes = fichier.readlines()
+        for mot in lignes: 
+            dictio_fr.append(mot.strip())
+
+    return dictio_fr
 
 
 
