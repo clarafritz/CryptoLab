@@ -125,7 +125,7 @@ def word_recognition(msg, dictio):
     return cpt
 
 
-# Fonction : Ouvre le fichier txt qui sert de dictionnaire francais et retourne le message user decoupé en mot
+# Fonction : Ouvre le fichier txt qui sert de dictionnaire francais et retourne mot dictio (fichier) en set
 def load_dictionary():
     chemin_dictio = Path(__file__).parent/'french_words.txt'
     dictio_fr = []
@@ -135,7 +135,7 @@ def load_dictionary():
         for mot in lignes: 
             dictio_fr.append(mot.strip())
 
-    return dictio_fr
+    return set(dictio_fr)
 
 
 
