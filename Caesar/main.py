@@ -32,13 +32,14 @@ def brute_force(msg):
     for decalage in range(26):
         message = user_input(msg, decalage)
         score_prop = similarity_score(message)
+        reconnaissance = word_recognition(message)
         if score_prop is not None: 
             key = 26 - decalage
             if key == 26: 
                 key = 0
-            result.append({"cle": key, "decalage": decalage, "message": message, "score": score_prop})
+            result.append({"cle": key, "decalage": decalage, "message": message, "frequence": score_prop, "reconnaissance": reconnaissance})
 
-    result.sort(key=lambda item: item["score"])
+    result.sort(key=lambda item: (-item["reconnaissance"], item["frequence"]))
     return result
 
 
@@ -186,7 +187,7 @@ else:
                 print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
             else: 
                 for prop in result:
-                    print(f'cle : {prop["cle"]} || decalage : {prop["decalage"]} || message : {prop["message"]} || score : {prop["score"]:.2f}')
+                    print(f'cle : {prop["cle"]} || decalage : {prop["decalage"]} || message : {prop["message"]} || score : {prop["frequence"]:.2f} || dictionnaire : {prop["reconnaissance"]}')
 
         elif option == 'c' or option == 'd':
             try :
