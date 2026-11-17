@@ -25,11 +25,14 @@ def user_input(msg, decalage):
 # Fonction : attaque par force brut : test les 26 clés grâce la fonction user_input()
 def brute_force(msg): 
     result = []
-    for key in range(26):
-        message = user_input(msg, key)
+    for decalage in range(26):
+        message = user_input(msg, decalage)
         score_prop = similarity_score(message)
         if score_prop is not None: 
-            result.append({"key": key, "message": message, "score": score_prop})
+            key = 26 - decalage
+            if key == 26: 
+                key = 0
+            result.append({"cle": key, "decalage": decalage, "message": message, "score": score_prop})
 
     result.sort(key=lambda item: item["score"])
     return result
@@ -152,7 +155,7 @@ else:
                 print("Impossible d'effectuer une analyse : aucune lettre valide dans le message.")
             else: 
                 for prop in result:
-                    print(f'Key : {prop["key"]} || Message : {prop["message"]} || Score : {prop["score"]:.2f}')
+                    print(f'cle : {prop["cle"]} || decalage : {prop["decalage"]} || message : {prop["message"]} || score : {prop["score"]:.2f}')
 
         elif option == 'c' or option == 'd':
             try :
