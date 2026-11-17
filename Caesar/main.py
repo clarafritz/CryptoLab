@@ -1,3 +1,7 @@
+# --------- IMPORT
+from pathlib import Path
+
+
 # --------- FONCTIONS
 # Fonction qui chiffre / déchiffre un msg avec un décalage précis 
 def user_input(msg, decalage): 
@@ -98,6 +102,33 @@ def similarity_score(msg):
     return score
 
 
+# Fonction : Analyse le message mot par mot -> fait une reconnaissance dans un dictionnaire FR (enleve ponctuation)
+# utilisation fichier txt french_words pour lire dictio -> open() / readlines()
+def word_recognition(msg):
+    chemin_dictio = Path(__file__).parent/'french_words.txt'
+    dictio_fr = []
+    
+    with open(chemin_dictio, 'r', encoding='utf-8') as fichier: 
+        lignes = fichier.readlines()
+        for mot in lignes: 
+            dictio_fr.append(mot.strip())
+
+    message = ''
+
+    for i in range(len(msg)):
+        if msg[i].isalpha() == False:
+            message += " "
+        else: 
+            message += msg[i]
+    word_msg = message.lower().split()
+
+    cpt = 0
+    for mot in word_msg :
+        if mot in dictio_fr:
+            cpt += 1
+
+    return cpt
+
 
 
 
@@ -169,3 +200,4 @@ else:
         
     else: 
         print('Choix invalide : veuillez répondre que par oui (o) ou non (n)')
+
