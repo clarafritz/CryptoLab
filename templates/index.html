@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoLab — Cryptanalysis Laboratory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="layout">
+        <!-- Algorithm Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <span class="badge-version">V1.0</span>
+                <h1>CryptoLab</h1>
+                <p>Cryptanalysis Laboratory</p>
+            </div>
+
+            <div class="sidebar-section">
+                <span class="sidebar-label">Algorithms</span>
+                <ul class="algo-list">
+                    <li>
+                        <button type="button" class="algo-btn active" data-algo="caesar">
+                            <span class="algo-name">Caesar Cipher</span>
+                            <span class="status-dot online" title="Available"></span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="algo-btn disabled" disabled title="Coming in V2">
+                            <span class="algo-name">Vigenère Cipher</span>
+                            <span class="badge-soon">V2</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="algo-btn disabled" disabled title="Coming in V2">
+                            <span class="algo-name">XOR Mask</span>
+                            <span class="badge-soon">V2</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="algo-btn disabled" disabled title="Coming in V3">
+                            <span class="algo-name">Substitution</span>
+                            <span class="badge-soon">V3</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-footer">
+                <p class="author-brand">Built by <strong>@clarafritz</strong></p>
+                <p>Python / Flask Engine</p>
+                <p>FR Lexicon: 30,000 words</p>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="workspace">
+            <header class="topbar">
+                <div>
+                    <h2>Caesar Cipher</h2>
+                    <span class="topbar-sub">Monoalphabetic shift substitution • Frequency & dictionary cryptanalysis</span>
+                </div>
+                <nav class="tabs" role="tablist">
+                    <button class="tab-btn active" data-tab="cipher" role="tab" aria-selected="true">
+                        Encrypt & Decrypt
+                    </button>
+                    <button class="tab-btn" data-tab="bruteforce" role="tab" aria-selected="false">
+                        Brute Force Attack
+                    </button>
+                </nav>
+            </header>
+
+            <main class="main-grid">
+                <!-- Left Panel: Input -->
+                <section class="card">
+                    <div class="card-header">
+                        <h3>Input & Parameters</h3>
+                        <button type="button" id="sample-btn" class="btn-ghost">Load Sample</button>
+                    </div>
+
+                    <div class="form-group">
+                        <textarea id="message-input" placeholder="Enter your plaintext or ciphertext here..."></textarea>
+                    </div>
+
+                    <div id="cipher-controls" class="controls-group">
+                        <div class="form-group">
+                            <label>Operation Mode</label>
+                            <div class="mode-toggle">
+                                <button type="button" class="mode-btn active" data-mode="encrypt">Encrypt (+)</button>
+                                <button type="button" class="mode-btn" data-mode="decrypt">Decrypt (-)</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label for="shift-range">Shift Key</label>
+                                <span id="shift-value" class="shift-badge">3</span>
+                            </div>
+                            <input type="range" id="shift-range" min="0" max="25" value="3">
+                        </div>
+                    </div>
+
+                    <button type="button" id="run-btn" class="btn-primary">
+                        Run Encryption
+                    </button>
+                    <p id="error-msg" class="error-banner hidden"></p>
+                </section>
+
+                <!-- Right Panel: Output -->
+                <section class="card">
+                    <div id="cipher-output-view">
+                        <div class="card-header">
+                            <h3>Transformed Output</h3>
+                            <button type="button" id="copy-btn" class="btn-ghost">Copy</button>
+                        </div>
+                        <div id="cipher-result-box" class="result-box empty">
+                            The result will appear here after execution...
+                        </div>
+                    </div>
+
+                    <div id="bruteforce-output-view" class="hidden">
+                        <div class="card-header">
+                            <h3>Candidates Ranked by Relevance</h3>
+                            <span id="candidates-count" class="meta-tag">0 / 26 keys</span>
+                        </div>
+                        <div id="bruteforce-list" class="bruteforce-list">
+                            <p class="placeholder-text">Launch a brute-force attack to test all 26 shift keys.</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Frequency Analysis Chart -->
+            <section class="card frequency-panel">
+                <div class="card-header">
+                    <div>
+                        <h3>Letter Frequency Analysis (A – Z)</h3>
+                        <p id="freq-summary" class="subtitle">French reference: most frequent letters are E (17.4%), A (8.2%), and S (8.1%).</p>
+                    </div>
+                    <div class="legend">
+                        <span class="legend-item"><i class="dot dot-text"></i> Your message (%)</span>
+                        <span class="legend-item"><i class="dot dot-fr"></i> French standard (%)</span>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="y-axis">
+                        <span>20%</span>
+                        <span>10%</span>
+                        <span>0%</span>
+                    </div>
+                    <div id="freq-chart" class="freq-chart"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
